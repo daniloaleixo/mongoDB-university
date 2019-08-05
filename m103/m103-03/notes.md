@@ -1,6 +1,8 @@
 
 # Chapter 3
 
+## Starting a sharded cluster
+
 ### Bring up the config server up
 ```
 mongod -f csrs_1.conf
@@ -69,5 +71,24 @@ mongo --port 26000 --username m103-admin --password m103-pass --authenticationDa
 
 # Add the repl server 
 sh.addShard("m103-repl/192.168.103.100:27012")
+
+```
+
+
+## Sharding a collection
+
+### Enabling sharding on db
+```
+sh.enableSharding("m103")
+```
+
+
+### Choosing a shard key
+```
+# Create a index
+db.products.createIndex({"<shard_key>": 1})
+
+# Shard the collection
+db.adminCommand( { shardCollection: "m103.products", key: { <shard_key>: 1 } } )
 
 ```
